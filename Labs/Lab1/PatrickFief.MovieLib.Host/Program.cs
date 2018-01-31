@@ -25,6 +25,9 @@ namespace PatrickFief.MovieLib.Host
                     case 'A':
                     AddProduct();
                     break;
+                    case 'R':
+                    RemoveProduct();
+                    break;
                     case 'Q':
                     quit = true;
                     break;
@@ -44,7 +47,7 @@ namespace PatrickFief.MovieLib.Host
             _description = ReadString("Enter optional description: ", false);
 
             //Get owned
-
+            _owned = GetOwned();
         }
 
         private static string ReadString( string message, bool isRequired )
@@ -82,6 +85,23 @@ namespace PatrickFief.MovieLib.Host
             } while (true);
         }
 
+        private static bool GetOwned()
+        {
+            do
+            {
+                Console.Write("Is the movie owned (Y/N): ");
+
+                string value = Console.ReadLine().ToUpper();
+                
+                if (value == "Y")
+                    return true;
+                if (value == "N")
+                    return false;
+
+                Console.WriteLine("Value is required");
+            } while (true);
+        }
+
         private static char DisplayMenu()
         {
             do
@@ -112,11 +132,29 @@ namespace PatrickFief.MovieLib.Host
             if (_name != null && _name != "")
             {
                 //Display a product
-                Console.WriteLine(_name);
-                Console.WriteLine(_length);
+                Console.WriteLine("Title: {0}", _name);
+                Console.WriteLine("Length: {0}", _length);
                 Console.WriteLine(_description);
+                Console.WriteLine("Owned: {0}", _owned);
             } else
                 Console.WriteLine("No products");
+        }
+
+        static void RemoveProduct()
+        {
+            do
+            {
+                Console.Write("Enter the name of the movie to remove or blank to cancel: ");
+
+                string value = Console.ReadLine();
+
+                if (value.CompareTo(_name) == 0) //TODO string comparison
+                    _name = "";
+                if (value == "")
+                    return; //TODO "remove" the product
+
+                Console.WriteLine("Movie not found");
+            } while (true);
         }
 
         //Data for a product
