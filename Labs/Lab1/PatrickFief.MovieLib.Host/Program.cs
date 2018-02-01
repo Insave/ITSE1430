@@ -41,7 +41,7 @@ namespace PatrickFief.MovieLib.Host
             _name = ReadString("Enter name: ", true);
 
             //Get price
-            _length = ReadDecimal("Enter optional length: ", 0);
+            _length = ReadDecimal("Enter length ", 0);
 
             //Get description
             _description = ReadString("Enter optional description: ", false);
@@ -70,7 +70,7 @@ namespace PatrickFief.MovieLib.Host
         {
             do
             {
-                Console.Write(message);
+                Console.Write(message + ">= {0}: ", minValue);
 
                 string value = Console.ReadLine();
 
@@ -148,16 +148,22 @@ namespace PatrickFief.MovieLib.Host
 
                 string value = Console.ReadLine();
 
-                if (value.CompareTo(_name) == 0) //TODO string comparison
+                if (value.Equals(_name)) //TODO string comparison
+                {
                     _name = "";
+                    _length = 0;
+                    _description = "";
+                    _owned = false;
+                }
                 if (value == "")
-                    return; //TODO "remove" the product
+                    return; 
 
                 Console.WriteLine("Movie not found");
             } while (true);
         }
 
         //Data for a product
+        //For multiple products, might use a map/set due to name being a unique id for movies
         static string _name;
         static decimal _length;
         static string _description;
