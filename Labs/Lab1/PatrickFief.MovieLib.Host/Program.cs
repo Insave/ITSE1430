@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// game over zeus / zeus and get a copy of the it security book
+
 namespace PatrickFief.MovieLib.Host
 {
     class Program
@@ -17,7 +19,7 @@ namespace PatrickFief.MovieLib.Host
                 char choice = DisplayMenu();
 
                 //Process menu selection
-                switch (choice)
+                switch (Char.ToUpper(choice))
                 {
                     case 'L':
                     ListProducts();
@@ -111,15 +113,15 @@ namespace PatrickFief.MovieLib.Host
                 Console.WriteLine("R)emove Movie");
                 Console.WriteLine("Q)uit");
 
-                string input = Console.ReadLine().ToUpper();
+                string input = Console.ReadLine().Trim();
 
-                if (input == "L")
+                if (String.Compare(input, "L", true) == 0)
                     return input[0];
-                else if (input == "A")
+                else if (String.Compare(input, "A", true) == 0)
                     return input[0];
-                else if (input == "Q")
+                else if (String.Compare(input, "Q", true) == 0)
                     return input[0];
-                else if (input == "R")
+                else if (String.Compare(input, "R", true) == 0)
                     return input[0];
 
                 Console.WriteLine("Please choose a valid option");
@@ -128,14 +130,19 @@ namespace PatrickFief.MovieLib.Host
 
         static void ListProducts()
         {
-            //Are there any products?
-            if (_name != null && _name != "")
+            //Are there any products? Eventually will be checking the length of the map or set used
+            if (!String.IsNullOrEmpty(_name))
             {
                 //Display a product
-                Console.WriteLine("Title: {0}", _name);
-                Console.WriteLine("Length: {0}", _length);
-                Console.WriteLine(_description);
-                Console.WriteLine("Owned: {0}", _owned);
+                //TODO organise list product 
+                string msg = $"Title: {_name} {Environment.NewLine}" +
+                    $"Length: {_length}";
+                Console.WriteLine(msg);
+
+                if (!String.IsNullOrEmpty(_description))
+                    Console.WriteLine(_description);
+
+                Console.WriteLine($"Owned: {_owned}");
             } else
                 Console.WriteLine("No products");
         }
@@ -146,16 +153,17 @@ namespace PatrickFief.MovieLib.Host
             {
                 Console.Write("Enter the name of the movie to remove or blank to cancel: ");
 
-                string value = Console.ReadLine();
+                string value = Console.ReadLine().Trim();
 
-                if (value.Equals(_name)) //TODO string comparison
+                if (value.Equals(_name)) //TODO remove from map/set
                 {
                     _name = "";
                     _length = 0;
                     _description = "";
                     _owned = false;
+                    return;
                 }
-                if (value == "")
+                if (String.IsNullOrEmpty(_name))
                     return; 
 
                 Console.WriteLine("Movie not found");
