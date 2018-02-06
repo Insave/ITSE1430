@@ -43,7 +43,7 @@ namespace PatrickFief.MovieLib.Host
             _name = ReadString("Enter name: ", true);
 
             //Get price
-            _length = ReadDecimal("Enter length ", 0);
+            _length = ReadDecimal("Enter optional length ", 0);
 
             //Get description
             _description = ReadString("Enter optional description: ", false);
@@ -75,6 +75,9 @@ namespace PatrickFief.MovieLib.Host
                 Console.Write(message + ">= {0}: ", minValue);
 
                 string value = Console.ReadLine();
+
+                if (String.IsNullOrEmpty(value))
+                    return 0;
 
                 if (Decimal.TryParse(value, out decimal result))
                 {
