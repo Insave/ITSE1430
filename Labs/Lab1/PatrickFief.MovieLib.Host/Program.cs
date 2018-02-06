@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// game over zeus / zeus and get a copy of the it security book
 
 namespace PatrickFief.MovieLib.Host
 {
@@ -78,7 +77,7 @@ namespace PatrickFief.MovieLib.Host
 
                 if (String.IsNullOrEmpty(value))
                     return 0;
-
+                
                 if (Decimal.TryParse(value, out decimal result))
                 {
                     //If not required or not empty
