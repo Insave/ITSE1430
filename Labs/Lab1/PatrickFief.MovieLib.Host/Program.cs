@@ -1,6 +1,6 @@
 ﻿/*
  * ITSE 1430
- *
+ * Patrick Fief
  * Lab 1
  */
 using System;
