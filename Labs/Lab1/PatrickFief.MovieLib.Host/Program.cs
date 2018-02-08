@@ -163,6 +163,7 @@ namespace PatrickFief.MovieLib.Host
                     _length = 0;
                     _description = "";
                     _owned = false;
+                    ListProducts();
                     return;
                 }
                 if (String.IsNullOrEmpty(_name))
