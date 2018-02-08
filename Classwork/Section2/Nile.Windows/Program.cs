@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ *
+ * Section 2
+ */
+using System;
 using System.Windows.Forms;
 
 namespace Nile.Windows
