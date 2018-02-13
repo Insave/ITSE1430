@@ -166,7 +166,7 @@ namespace PatrickFief.MovieLib.Host
                     ListProducts();
                     return;
                 }
-                if (String.IsNullOrEmpty(_name))
+                if (String.IsNullOrEmpty(value))
                     return; 
 
                 Console.WriteLine("Movie not found");
