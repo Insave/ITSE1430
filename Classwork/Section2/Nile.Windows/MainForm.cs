@@ -57,15 +57,34 @@ namespace Nile.Windows
         }
 
         private void OnProductAdd( object sender, EventArgs e )
-        {
+        { 
             var form = new ProductDetailForm();
             form.Text = "Add Product";
-            
+
             //Show form modally
             var result = form.ShowDialog(this);
             if (result != DialogResult.OK)
                 return;
 
+            //"Add" the product
+            _product = form.Product;
+        }
+
+        private void OnProductEdit( object sender, EventArgs e )
+        {
+            if (_product == null)
+                return;
+
+            var form = new ProductDetailForm();
+            form.Text = "Edit Product";
+            form.Product = _product;
+
+            //Show form modally
+            var result = form.ShowDialog(this);
+            if (result != DialogResult.OK)
+                return;
+
+            //"Editing" the product
             _product = form.Product;
         }
 
@@ -74,18 +93,12 @@ namespace Nile.Windows
             if (!ShowConfirmation("Are you sure?", "Remove Product"))
                 return;
 
-            //TODO: Remove product
-            MessageBox.Show(this, "Not implemented.", "Remove Complete", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-
-        private void OnProductEdit( object sender, EventArgs e )
-        {
-            MessageBox.Show(this, "Not implemented.", "Product Edit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            _product = null;
         }
 
         private void OnFileExit( object sender, EventArgs e )
         {
-            MessageBox.Show(this, "Not implemented.", "File Exit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Close();
         }
 
         private void OnHelpAbout( object sender, EventArgs e )
