@@ -58,8 +58,7 @@ namespace Nile.Windows
 
         private void OnProductAdd( object sender, EventArgs e )
         { 
-            var form = new ProductDetailForm();
-            form.Text = "Add Product";
+            var form = new ProductDetailForm("Add Product");
 
             //Show form modally
             var result = form.ShowDialog(this);
@@ -73,11 +72,12 @@ namespace Nile.Windows
         private void OnProductEdit( object sender, EventArgs e )
         {
             if (_product == null)
+            { 
+                MessageBox.Show(this, "There is no product to edit.", "Edit Product", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
+            }
 
-            var form = new ProductDetailForm();
-            form.Text = "Edit Product";
-            form.Product = _product;
+            var form = new ProductDetailForm(_product);
 
             //Show form modally
             var result = form.ShowDialog(this);
