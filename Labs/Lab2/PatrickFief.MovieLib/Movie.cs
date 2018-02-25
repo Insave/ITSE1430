@@ -1,85 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * ITSE 1430
+ * Patrick Fief
+ * Lab 2
+ */
+using System;
 
 namespace PatrickFief.MovieLib
 {
     /// <summary>Provides infromation about a Movie.</summary>
     public class Movie
     {
-        /// <summary>Gets or Sets the name.
-        public string Name
+        /// <summary>The title of the movie</summary>
+        public string Title
         {
-            get { return _name ?? ""; }
-            set { _name = value ?? ""; }
+            get { return _title ?? ""; }
+            set { _title = value ?? ""; }
         }
 
+        /// <summary>A description of the movie</summary>
         public string Description
         {
             get { return _description ?? ""; }
             set { _description = value ?? ""; }
         }
 
-        //Using auto property here
-        public decimal Price
-        {
-            //get { return _price; }
-            //set { _price = value; }
-            get; set;
-        } = 0;
+        /// <summary>Length of the movie in minutes</summary>
+        public int Length {get; set;} = 0;
 
-        //public int ShowingOffAccessiblity
-        //{
-        //    get { }
-        //    internal set { }
-        //}
-
-        /// <summaryGets the price, with any discontinued discounts.</summary>
-        public decimal ActualPrice
-        {
-            get { return IsDiscontinued ? Price - (Price * DiscountPercentage) : Price; }
-            //set { }
-        }
-
-        public bool IsDiscontinued { get; set; }
-        //{
-        //    get { return _isDiscontinued; }
-        //    set { _isDiscontinued = value; }
-        //}
-
-        ///// <summary>Get the product name.</summary>
-        ///// <returns>The name.</returns>
-        //public string GetName()
-        //{
-        //    return _name ?? "";
-        //}
-        ///// <summary>Sets the product name.</summary>
-        ///// <param name="value">The name.</param>
-        //public void SetName(string value)
-        //{
-        //    _name = value ?? "";
-        //}
+        /// <summary>Whether or not the movie is owned</summary>
+        public bool IsOwned { get; set; }
 
         /// <summary>Validates the product.</summary>
         /// <returns>Error message, if any.</returns>
         public string Validate()
         {
             //Name is required
-            if (String.IsNullOrEmpty(_name))
-                return "Name cannot be empty";
+            if (String.IsNullOrEmpty(_title))
+                return "Title cannot be empty";
 
-            //Price >= 0
-            if (Price < 0)
-                return "Price must be >= 0";
+            //Length >= 0
+            if (Length < 0)
+                return "Length must be >= 0 minutes";
 
             return "";
         }
 
-        private string _name;
+        private string _title;
         private string _description;
-        //private decimal _price;
-        //private bool _isDiscontinued;
     }
 }

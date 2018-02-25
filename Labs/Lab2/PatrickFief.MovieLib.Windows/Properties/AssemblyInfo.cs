@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PatrickFief.MovieLib.Windows")]
+[assembly: AssemblyTitle("MovieLib.Windows")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PatrickFief.MovieLib.Windows")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCompany("Patrick Fief")]
+[assembly: AssemblyProduct("Movie Library")]
+[assembly: AssemblyCopyright("Copyright ©  2018 ITSE1430")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
