@@ -44,7 +44,8 @@ namespace Nile.Windows
             _database.Add(form.Product, out var message);
             if (!String.IsNullOrEmpty(message))
                 MessageBox.Show(message);
-            
+
+            RefreshUI();
             //Find empty array element
             //var index = FindEmptyProductIndex();
             //if (index >= 0)
@@ -53,9 +54,8 @@ namespace Nile.Windows
 
         private void OnProductEdit( object sender, EventArgs e )
         {
-            //Get the first product
-            var products = _database.GetAll();
-            var product = (products.Length > 0) ? products[0] : null;
+            //Get the selected product
+            var product = GetSelectedProduct();
             if (product == null)
                 return;
 
@@ -71,9 +71,12 @@ namespace Nile.Windows
                 return;
 
             //Update the product
+            form.Product.Id = product.Id;
             _database.Edit(form.Product, out var message);
             if (!String.IsNullOrEmpty(message))
                 MessageBox.Show(message);
+
+            RefreshUI();
         }
 
         private void OnProductRemove( object sender, EventArgs e )
@@ -82,9 +85,8 @@ namespace Nile.Windows
             //if (index < 0)
             //  return;
 
-            //Get the first product
-            var products = _database.GetAll();
-            var product = (products.Length > 0) ? products[0] : null;
+            //Get the selected product
+            var product = GetSelectedProduct();
             if (product == null)
                 return;
 
@@ -94,6 +96,8 @@ namespace Nile.Windows
             //Remove product
             _database.Remove(product.Id);
             //_products[index] = null;
+
+            RefreshUI();
         }        
         
         private void OnHelpAbout( object sender, EventArgs e )
@@ -101,6 +105,14 @@ namespace Nile.Windows
             MessageBox.Show(this, "Not implemented", "Help About", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }
         #endregion
+
+        private Product GetSelectedProduct()
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+                return dataGridView1.SelectedRows[0].DataBoundItem as Product;
+
+            return null;
+        }
 
         private void RefreshUI ()
         {
