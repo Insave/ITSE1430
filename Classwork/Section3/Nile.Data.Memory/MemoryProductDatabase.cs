@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,27 +13,29 @@ namespace Nile.Data.Memory
         public MemoryProductDatabase()
         {
             //_products = new Product[25];
+            _products = new List<Product>()
+            {
+                new Product() 
+                {
+                    Id = _nextID++,
+                    Name = "iPhone X",
+                    IsDiscontinued = true,
+                    Price = 1500,
+                },
+                new Product() {
+                    Id = _nextID++,
+                    Name = "Windows Phone",
+                    IsDiscontinued = true,
+                    Price = 15,
+                },
+                new Product() {
+                    Id = _nextID++,
+                    Name = "Samsung S8",
+                    IsDiscontinued = false,
+                    Price = 800,
+                },
+            };  
 
-            var product = new Product();
-            product.Id = _nextID++;
-            product.Name = "iPhone X";
-            product.IsDiscontinued = true;
-            product.Price = 1500;
-            _products.Add(product);
-
-            product = new Product();
-            product.Id = _nextID++;
-            product.Name = "Windows Phone";
-            product.IsDiscontinued = true;
-            product.Price = 15;
-            _products.Add(product);
-
-            product = new Product();
-            product.Id = _nextID++;
-            product.Name = "Samsung S8";
-            product.IsDiscontinued = false;
-            product.Price = 800;
-            _products.Add(product);
         }
 
         public Product Add ( Product product, out string message )
@@ -45,10 +48,11 @@ namespace Nile.Data.Memory
             };
 
             //Validate product
-            var error = product.Validate();
-            if (!String.IsNullOrEmpty(error))
+            var errors = ObjectValidator.Validate(product);
+            //var error = product.Validate();
+            if (errors.Count() > 0)
             {
-                message = error;
+                message = errors.ElementAt(0).ErrorMessage;
                 return null;
             };
 
