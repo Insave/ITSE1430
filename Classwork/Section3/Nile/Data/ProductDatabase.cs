@@ -5,47 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nile.Data.Memory
+namespace Nile.Data
 {
-    /// <summary>Provides an in-memory product database.</summary>
-    public class MemoryProductDatabase : ProductDatabase
+    /// <summary>Provides an abstract product database.</summary>
+    public abstract class ProductDatabase : IProductDatabase
     {
-        public MemoryProductDatabase()
+        public Product Add ( Product product, out string message )
         {
-            //_products = new Product[25];
-            _products = new List<Product>()
+            //Check for null
+            if (product == null)
             {
-                new Product() 
-                {
-                    Id = _nextID++,
-                    Name = "iPhone X",
-                    IsDiscontinued = true,
-                    Price = 1500,
-                },
-                new Product() {
-                    Id = _nextID++,
-                    Name = "Windows Phone",
-                    IsDiscontinued = true,
-                    Price = 15,
-                },
-                new Product() {
-                    Id = _nextID++,
-                    Name = "Samsung S8",
-                    IsDiscontinued = false,
-                    Price = 800,
-                },
-            };  
+                message = "Product cannot be null.";
+                return null;
+            };
 
-        }
+            //Validate product
+            var errors = ObjectValidator.Validate(product);
+            //var error = product.Validate();
+            if (errors.Count() > 0)
+            {
+                message = errors.ElementAt(0).ErrorMessage;
+                return null;
+            };
 
-        protected override Product AddCore ( Product product )
-        {
-            //Clone the object
-            product.Id = _nextID++;
-            _products.Add(Clone(product));
+            // Verify unique product
+            var existing = GetProductByName(product.Name);
+            if(existing != null)
+            {
+                message = "Product already exists.";
+                return null;
+            }
 
-            //Return a copy
-            return product;
+            message = null;
+            return AddCore(product);
         }
 
         public Product Update ( Product product, out string message )
@@ -90,39 +82,9 @@ namespace Nile.Data.Memory
             return product;
         }
 
-        //public IEnumerable<Product> GetAll ()
-        //{
-        //    //Return a copy so caller cannot change the underlying data
-        //    var items = new List<Product>();
-
-        //    //for (var index = 0; index < _products.Length; ++index)
-        //    foreach(var product in _products)
-        //    {
-        //        if(product != null)
-        //            items.Add(Clone(product));
-        //    }
-
-        //    return items;
-        //}
-
-        protected override Product GetCore( int id )
+        public IEnumerable<Product> GetAll()
         {
-            foreach (var product in _products)
-            {
-                if (product.Id == id)
-                    return product;
-            };
-
-            return null;
-        }
-
-        protected override IEnumerable<Product> GetAllCore()
-        {
-            foreach (var product in _products)
-            {
-                if (product != null)
-                    yield return Clone(product);
-            }
+            return GetAllCore();
         }
 
         public void Remove ( int id )
@@ -163,6 +125,18 @@ namespace Nile.Data.Memory
         //    return -1;
         //}
 
+        private Product GetById ( int id )
+        {
+            //for (var index = 0; index < _products.Length; ++index)
+            foreach (var product in _products)
+            {
+                if (product.Id == id)
+                    return product;
+            };
+
+            return null;
+        }
+
         private Product GetProductByName (string name)
         {
             foreach (var product in _products)
@@ -173,6 +147,10 @@ namespace Nile.Data.Memory
 
             return null;
         }
+
+        protected abstract Product AddCore( Product product );
+        protected abstract IEnumerable<Product> GetAllCore();
+        protected abstract Product GetCore( int id );
 
         private readonly List<Product> _products = new List<Product>();
         private int _nextID = 1;
