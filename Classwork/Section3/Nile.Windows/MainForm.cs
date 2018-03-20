@@ -122,7 +122,8 @@ namespace Nile.Windows
             var products = _database.GetAll();
 
             //Bind to grid
-            dataGridView1.DataSource = new List<Product> (products);
+            productBindingSource.DataSource = new List<Product>(products);
+            //dataGridView1.DataSource 
         }
 
         private bool ShowConfirmation ( string message, string title )
@@ -133,5 +134,10 @@ namespace Nile.Windows
         }
 
         private IProductDatabase _database = new MemoryProductDatabase();
+
+        private void productBindingSource_CurrentChanged( object sender, EventArgs e )
+        {
+
+        }
     }
 }

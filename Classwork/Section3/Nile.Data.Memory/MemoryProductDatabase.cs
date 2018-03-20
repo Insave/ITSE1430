@@ -48,62 +48,17 @@ namespace Nile.Data.Memory
             return product;
         }
 
-        public Product Update ( Product product, out string message )
+        protected override Product UpdateCore ( Product product )
         {
-            //Check for null
-            if (product == null)
-            {
-                message = "Product cannot be null.";
-                return null;
-            };
+            var existing = GetCore(product.Id);
 
-            //Validate product
-            var errors = ObjectValidator.Validate(product);
-            if (errors.Count() > 0)
-            {
-                message = errors.ElementAt(0).ErrorMessage;
-                return null;
-            };
-
-            // Verify unique product
-            var existing = GetProductByName(product.Name);
-            if (existing != null && existing.Id != product.Id)
-            {
-                message = "Product already exists.";
-                return null;
-            }
-
-            //Find existing
-            existing = existing ?? GetById(product.Id);
-            if (existing == null)
-            {
-                message = "Product not found.";
-                return null;
-            };
-
-            //Clone the object
+            // Clone the object
             //_products[existingIndex] = Clone(product);
             Copy(existing, product);
-            message = null;
 
             //Return a copy
             return product;
         }
-
-        //public IEnumerable<Product> GetAll ()
-        //{
-        //    //Return a copy so caller cannot change the underlying data
-        //    var items = new List<Product>();
-
-        //    //for (var index = 0; index < _products.Length; ++index)
-        //    foreach(var product in _products)
-        //    {
-        //        if(product != null)
-        //            items.Add(Clone(product));
-        //    }
-
-        //    return items;
-        //}
 
         protected override Product GetCore( int id )
         {
@@ -125,14 +80,11 @@ namespace Nile.Data.Memory
             }
         }
 
-        public void Remove ( int id )
+        protected override void RemoveCore ( int id )
         {
-            if (id > 0)
-            {
-                var existing = GetById(id);
-                if (existing != null)
-                    _products.Remove(existing);
-            };
+            var existing = GetCore(id);
+            if (existing != null)
+                _products.Remove(existing);
         }
 
         private Product Clone(Product item)
@@ -152,18 +104,7 @@ namespace Nile.Data.Memory
             target.IsDiscontinued = source.IsDiscontinued;
         }
 
-        //private int FindEmptyProductIndex()
-        //{
-        //    for (var index = 0; index < _products.Length; ++index)
-        //    {
-        //        if (_products[index] == null)
-        //            return index;
-        //    };
-
-        //    return -1;
-        //}
-
-        private Product GetProductByName (string name)
+        protected override Product GetProductByNameCore (string name)
         {
             foreach (var product in _products)
             {
