@@ -10,33 +10,33 @@ namespace Nile.Data.Memory
     /// <summary>Provides an in-memory product database.</summary>
     public class MemoryProductDatabase : ProductDatabase
     {
-        public MemoryProductDatabase()
-        {
-            //_products = new Product[25];
-            _products = new List<Product>()
-            {
-                new Product() 
-                {
-                    Id = _nextID++,
-                    Name = "iPhone X",
-                    IsDiscontinued = true,
-                    Price = 1500,
-                },
-                new Product() {
-                    Id = _nextID++,
-                    Name = "Windows Phone",
-                    IsDiscontinued = true,
-                    Price = 15,
-                },
-                new Product() {
-                    Id = _nextID++,
-                    Name = "Samsung S8",
-                    IsDiscontinued = false,
-                    Price = 800,
-                },
-            };  
-
-        }
+        //public MemoryProductDatabase()
+        //{
+        //    //_products = new Product[25];
+        //    //_products = new List<Product>()
+        //    //{
+        //    //    new Product() 
+        //    //    {
+        //    //        Id = _nextID++,
+        //    //        Name = "iPhone X",
+        //    //        IsDiscontinued = true,
+        //    //        Price = 1500,
+        //    //    },
+        //    //    new Product() {
+        //    //        Id = _nextID++,
+        //    //        Name = "Windows Phone",
+        //    //        IsDiscontinued = true,
+        //    //        Price = 15,
+        //    //    },
+        //    //    new Product() {
+        //    //        Id = _nextID++,
+        //    //        Name = "Samsung S8",
+        //    //        IsDiscontinued = false,
+        //    //        Price = 800,
+        //    //    },
+        //    //};
+        //    this.Seed();
+        //}
 
         protected override Product AddCore ( Product product )
         {

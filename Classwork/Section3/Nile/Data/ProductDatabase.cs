@@ -20,13 +20,22 @@ namespace Nile.Data
             };
 
             //Validate product
-            var errors = ObjectValidator.Validate(product);
-            //var error = product.Validate();
-            if (errors.Count() > 0)
+            //var errors = ObjectValidator.Validate(product);
+            var errors = product.Validate();
+
+            //if (errors.Count() > 0)
+            //{
+            //    var error = Enumerable.FirstOrDefault(errors);
+            //    message = errors.ElementAt(0).ErrorMessage;
+            //    return null;
+            //};
+
+            var error = errors.FirstOrDefault();
+            if(error != null)
             {
-                message = errors.ElementAt(0).ErrorMessage;
+                message = error.ErrorMessage;
                 return null;
-            };
+            }
 
             // Verify unique product
             var existing = GetProductByNameCore(product.Name);
@@ -52,7 +61,7 @@ namespace Nile.Data
             };
 
             //Validate product
-            var errors = ObjectValidator.Validate(product);
+            var errors = product.Validate();
             if (errors.Count() > 0)
             {
                 message = errors.ElementAt(0).ErrorMessage;
