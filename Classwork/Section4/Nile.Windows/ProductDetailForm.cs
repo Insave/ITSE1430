@@ -71,7 +71,7 @@ namespace Nile.Windows
             //    DisplayError(message);
             //    return;
             //};
-            var errors = product.Validate();
+            var errors = product.TryValidate();
             if (errors.Count() > 0)
             {
                 //Get first error

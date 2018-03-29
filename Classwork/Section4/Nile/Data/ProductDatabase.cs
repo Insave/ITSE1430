@@ -10,79 +10,42 @@ namespace Nile.Data
     /// <summary>Provides an abstract product database.</summary>
     public abstract class ProductDatabase : IProductDatabase
     {
-        public Product Add ( Product product, out string message )
+        public Product Add ( Product product ) 
         {
             //Check for null
-            if (product == null)
-            {
-                message = "Product cannot be null.";
-                return null;
-            };
+            //if (product == null)
+                //throw new ArgumentNullException(nameof(product));
+            product = product ?? throw new ArgumentNullException(nameof(product));
 
             //Validate product
-            //var errors = ObjectValidator.Validate(product);
-            var errors = product.Validate();
-
-            //if (errors.Count() > 0)
-            //{
-            //    var error = Enumerable.FirstOrDefault(errors);
-            //    message = errors.ElementAt(0).ErrorMessage;
-            //    return null;
-            //};
-
-            var error = errors.FirstOrDefault();
-            if(error != null)
-            {
-                message = error.ErrorMessage;
-                return null;
-            }
+            product.Validate();
 
             // Verify unique product
             var existing = GetProductByNameCore(product.Name);
-            if(existing != null)
-            {
-                message = "Product already exists.";
-                return null;
-            }
-
-            message = null;
+            if (existing != null)
+                throw new Exception("Product already exists");
+            
             return AddCore(product);
         }
 
-        public Product Update ( Product product, out string message )
+        public Product Update ( Product product )
         {
-            message = "";
-
             //Check for null
             if (product == null)
-            {
-                message = "Product cannot be null.";
-                return null;
-            };
+                throw new ArgumentNullException(nameof(product));
 
             //Validate product
-            var errors = product.Validate();
-            if (errors.Count() > 0)
-            {
-                message = errors.ElementAt(0).ErrorMessage;
-                return null;
-            };
+            product.Validate();
 
             // Verify unique product
             var existing = GetProductByNameCore(product.Name);
             if (existing != null && existing.Id != product.Id)
-            {
-                message = "Product already exists.";
-                return null;
-            }
+                throw new Exception("Product already exists");
 
             //Find existing
             existing = existing ?? GetCore(product.Id);
             if (existing == null)
-            {
-                message = "Product not found.";
-                return null;
-            };
+                throw new ArgumentException("Product not found", nameof(product));
             
             return UpdateCore(product);
         }
@@ -94,10 +57,10 @@ namespace Nile.Data
 
         public void Remove ( int id )
         {
-            if (id > 0)
-            {
-                RemoveCore(id);
-            };
+            if (id <= 0)
+                throw new ArgumentOutOfRangeException(nameof(id), "Id must be > 0");
+            
+            RemoveCore(id);
         }
 
         protected abstract Product AddCore( Product product );
