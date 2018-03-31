@@ -7,8 +7,8 @@
     <ProjectGuid>{F3B8DD6E-7216-496A-BD6A-BEE83DBF9CD4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nile</RootNamespace>
-    <AssemblyName>Nile</AssemblyName>
+    <RootNamespace>PatrickFief.MovieLib</RootNamespace>
+    <AssemblyName>PatrickFief.MovieLib</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

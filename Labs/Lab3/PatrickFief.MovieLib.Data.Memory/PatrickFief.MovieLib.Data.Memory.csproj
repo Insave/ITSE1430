@@ -7,8 +7,8 @@
     <ProjectGuid>{F95AE9BE-FB3F-41C6-B6FE-A7A4C32EDEFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nile.Data.Memory</RootNamespace>
-    <AssemblyName>Nile.Data.Memory</AssemblyName>
+    <RootNamespace>PatrickFief.MovieLib.Data.Memory</RootNamespace>
+    <AssemblyName>PatrickFief.MovieLib.Data.Memory</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -5,16 +5,21 @@
  */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PatrickFief.MovieLib.Data
 {
-    /// <summary>Provides an abstract product database.</summary>
+    /// <summary>Provides a base implementation of <see cref="IMovieDatabase"/>.</summary>
     public abstract class MovieDatabase : IMovieDatabase
     {
+        /// <summary>Add a new movie.</summary>
+        /// <param name="movie">The movie to add.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>The added movie.</returns>
+        /// <remarks>
+        /// Returns an error if movie is null, invalid or if a movie
+        /// with the same name already exists.
+        /// </remarks>
         public Movie Add ( Movie movie, out string message )
         {
             //Check for null
@@ -46,6 +51,14 @@ namespace PatrickFief.MovieLib.Data
             return AddCore(movie);
         }
 
+        /// <summary>Edits an existing movie.</summary>
+        /// <param name="movie">The movie to update.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>The updated movie.</returns>
+        /// <remarks>
+        /// Returns an error if movie is null, invalid, movie name
+        /// already exists or if the movie cannot be found.
+        /// </remarks>
         public Movie Update ( Movie movie, out string message )
         {
             message = "";
@@ -84,11 +97,15 @@ namespace PatrickFief.MovieLib.Data
             return UpdateCore(movie);
         }
 
+        /// <summary>Gets all movies.</summary>
+        /// <returns>The list of movies.</returns>
         public IEnumerable<Movie> GetAll()
         {
             return GetAllCore();
         }
 
+        /// <summary>Removes a movie.</summary>
+        /// <param name="id">The movie ID.</param>
         public void Remove ( int id )
         {
             if (id > 0)

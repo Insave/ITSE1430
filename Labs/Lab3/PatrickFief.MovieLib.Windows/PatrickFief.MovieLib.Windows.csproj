@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BD9C86BB-6D5E-4E80-9528-7BFB54CED37D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Nile.Windows</RootNamespace>
-    <AssemblyName>Nile.Windows</AssemblyName>
+    <RootNamespace>PatrickFief.MovieLib.Windows</RootNamespace>
+    <AssemblyName>PatrickFief.MovieLib.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -83,6 +83,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\Nile.Product.datasource" />
     <None Include="Properties\DataSources\PatrickFief.MovieLib.Movie.datasource" />

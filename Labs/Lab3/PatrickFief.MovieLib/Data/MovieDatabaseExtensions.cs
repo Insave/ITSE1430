@@ -11,26 +11,29 @@ using System.Threading.Tasks;
 
 namespace PatrickFief.MovieLib.Data
 {
+    /// <summary>Provides extension methods for <see cref="IMovieDatabase"/>.</summary>
     public static class MovieDatabaseExtensions
     {
+        /// <summary>Seeds the database.</summary>
+        /// <param name="source">The source.</param>
         public static void Seed ( this IMovieDatabase source )
         {
             var message = "";
             source.Add(new Movie() {
-                Title = "iPhone X",
+                Title = "The Mummy",
                 IsOwned = true,
-                Length = 1500,
+                Length = 120,
 
             }, out message);
             source.Add(new Movie() {
-                Title = "Windows Phone",
+                Title = "The Incredibles",
                 IsOwned = true,
-                Length = 15,
+                Length = 105,
             }, out message);
             source.Add(new Movie() {
-                Title = "Samsung S8",
+                Title = "Test movie",
                 IsOwned = false,
-                Length = 800,
+                Length = 60,
             }, out message);
                 
         }

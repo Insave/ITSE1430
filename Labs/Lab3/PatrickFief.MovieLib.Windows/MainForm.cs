@@ -22,6 +22,8 @@ namespace PatrickFief.MovieLib.Windows
         {
             base.OnLoad(e);
 
+            _database.Seed();
+
             RefreshUI();
         }
 
