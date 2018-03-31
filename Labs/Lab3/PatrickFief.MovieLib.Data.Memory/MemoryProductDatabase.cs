@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Patrick Fief
+ * Lab 3
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -64,30 +69,30 @@ namespace PatrickFief.MovieLib.Data.Memory
             var newMovie = new Movie();
             Copy(newMovie, item);
 
-            return newProduct;
+            return newMovie;
         }
 
         private void Copy( Movie target, Movie source )
         {
             target.Id = source.Id;
-            target.Name = source.Name;
+            target.Title = source.Title;
             target.Description = source.Description;
-            target.Price = source.Price;
-            target.IsDiscontinued = source.IsDiscontinued;
+            target.Length = source.Length;
+            target.IsOwned = source.IsOwned;
         }
 
-        protected override Movie GetMovieByNameCore( string name)
+        protected override Movie GetMovieByNameCore( string title)
         {
             foreach (var movie in _movies)
             {
-                if (String.Compare(movie.Name, name, true) == 0)
+                if (String.Compare(movie.Title, title, true) == 0)
                     return movie;
             };
 
             return null;
         }
 
-        private readonly List<Movie> _products = new List<Movie>();
+        private readonly List<Movie> _movies = new List<Movie>();
         private int _nextID = 1;
     }
 }

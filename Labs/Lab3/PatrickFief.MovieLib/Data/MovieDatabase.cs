@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Patrick Fief
+ * Lab 3
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -61,7 +66,7 @@ namespace PatrickFief.MovieLib.Data
             };
 
             // Verify unique product
-            var existing = GetMovieByNameCore(movie.Name);
+            var existing = GetMovieByNameCore(movie.Title);
             if (existing != null && existing.Id != movie.Id)
             {
                 message = "Product already exists.";

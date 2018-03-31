@@ -1,10 +1,11 @@
 ﻿/*
  * ITSE 1430
  * Patrick Fief
- * Lab 2
+ * Lab 3
  */
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PatrickFief.MovieLib.Windows
@@ -55,24 +56,31 @@ namespace PatrickFief.MovieLib.Windows
 
         private void OnSave( object sender, EventArgs e )
         {
-            //Create product
-            var movie = new Movie();
-            movie.Title = _txtTitle.Text;
-            movie.Description = _txtDescription.Text;
-            movie.Length = ConvertToLength(_txtLength);
-            movie.IsOwned = _chkIsOwned.Checked;
-
-            //Validate
-            var message = movie.Validate();
-            if (!String.IsNullOrEmpty(message))
-                DisplayError(message);
             //Force validation of child controls
             if (!ValidateChildren())
                 return;
 
+            // Create product - using object initializer syntax
+            var movie = new Movie() {
+                Title = _txtTitle.Text,
+                Description = _txtDescription.Text,
+                Length = ConvertToLength(_txtLength),
+                IsOwned = _chkIsOwned.Checked,
+            };
+
+            //Validate product using IValidatableObject
+            var errors = ObjectValidator.Validate(movie);
+            if (errors.Count() > 0)
+            {
+                //Get first error
+                DisplayError(errors.ElementAt(0).ErrorMessage);
+                return;
+            };
+
             //Return from form
             Movie = movie;
             DialogResult = DialogResult.OK;
+
             Close();
         }
 

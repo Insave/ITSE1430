@@ -29,12 +29,26 @@ namespace PatrickFief.MovieLib
         /// <summary>Length of the movie in minutes</summary>
         public int Length {get; set;} = 0;
 
+        public int Id { get; set; } = 0;
+
         /// <summary>Whether or not the movie is owned</summary>
         public bool IsOwned { get; set; }
 
         public IEnumerable<ValidationResult> Validate( ValidationContext validationContext )
         {
-            throw new NotImplementedException();
+            var errors = new List<ValidationResult>();
+
+            //Name is required
+            if (String.IsNullOrEmpty(_title))
+                errors.Add(new ValidationResult("Title cannot be empty",
+                             new[] { nameof(Title) }));
+
+            //Price >= 0
+            if (Length < 0)
+                errors.Add(new ValidationResult("Length must be >= 0",
+                            new[] { nameof(Length) }));
+
+            return errors;
         }
 
         private string _title;

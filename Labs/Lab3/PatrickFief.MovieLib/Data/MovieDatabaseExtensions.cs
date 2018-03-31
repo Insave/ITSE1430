@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Patrick Fief
+ * Lab 3
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +17,20 @@ namespace PatrickFief.MovieLib.Data
         {
             var message = "";
             source.Add(new Movie() {
-                Name = "iPhone X",
-                IsDiscontinued = true,
-                Price = 1500,
+                Title = "iPhone X",
+                IsOwned = true,
+                Length = 1500,
 
             }, out message);
             source.Add(new Movie() {
-                Name = "Windows Phone",
-                IsDiscontinued = true,
-                Price = 15,
+                Title = "Windows Phone",
+                IsOwned = true,
+                Length = 15,
             }, out message);
             source.Add(new Movie() {
-                Name = "Samsung S8",
-                IsDiscontinued = false,
-                Price = 800,
+                Title = "Samsung S8",
+                IsOwned = false,
+                Length = 800,
             }, out message);
                 
         }
