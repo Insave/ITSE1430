@@ -66,7 +66,7 @@ namespace PatrickFief.MovieLib.Data
             //Check for null
             if (movie == null)
             {
-                message = "Product cannot be null.";
+                message = "Movie cannot be null.";
                 return null;
             };
 
@@ -82,7 +82,7 @@ namespace PatrickFief.MovieLib.Data
             var existing = GetMovieByNameCore(movie.Title);
             if (existing != null && existing.Id != movie.Id)
             {
-                message = "Product already exists.";
+                message = "Movie already exists.";
                 return null;
             }
 
@@ -90,7 +90,7 @@ namespace PatrickFief.MovieLib.Data
             existing = existing ?? GetCore(movie.Id);
             if (existing == null)
             {
-                message = "Product not found.";
+                message = "Movie not found.";
                 return null;
             };
             

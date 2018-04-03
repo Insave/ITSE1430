@@ -69,14 +69,14 @@ namespace PatrickFief.MovieLib.Windows
             };
 
             //Validate product using IValidatableObject
-            var errors = ObjectValidator.Validate(movie);
+            var errors = movie.Validate();
             if (errors.Count() > 0)
             {
                 //Get first error
                 DisplayError(errors.ElementAt(0).ErrorMessage);
                 return;
             };
-
+            
             //Return from form
             Movie = movie;
             DialogResult = DialogResult.OK;

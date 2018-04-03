@@ -65,7 +65,7 @@ namespace PatrickFief.MovieLib.Windows
         {
             var button = sender as ToolStripMenuItem;
 
-            var form = new MovieDetailForm("Add Product");
+            var form = new MovieDetailForm("Add Movie");
 
             //Show form modally
             var result = form.ShowDialog(this);
@@ -100,7 +100,7 @@ namespace PatrickFief.MovieLib.Windows
             var movie = GetSelectedProduct();
             if (movie == null)
             {
-                MessageBox.Show(this, "No product selected", "Error",
+                MessageBox.Show(this, "No movie selected", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             };
@@ -172,8 +172,7 @@ namespace PatrickFief.MovieLib.Windows
             return MessageBox.Show(this, message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)
                 == DialogResult.Yes;
         }
-
-        private Movie _movie;
+        
         private IMovieDatabase _database = new MemoryProductDatabase();
 
         #endregion
