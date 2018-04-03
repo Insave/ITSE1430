@@ -41,13 +41,15 @@ namespace Nile.Data.IO
             {
                 _items = LoadData();
 
-                _id = 0;
-                foreach (var item in _items)
-                {
-                    if (item.Id > _id)
-                        _id = item.Id;
-                }
-                ++_id;
+                //_id = 0;
+                //foreach (var item in _items)
+                //{
+                //    if (item.Id > _id)
+                //        _id = item.Id;
+                //}
+                if (_items.Any())
+                    _id = _items.Max(i => i.Id) + 1;
+                //++_id;
             }
         }
 
@@ -84,12 +86,15 @@ namespace Nile.Data.IO
             };
         }
 
-        private void SaveData()
+        private void SaveDataPoor()
         {
+            Stream stream = null;
+            StreamWriter writer = null;
+
             try
-            {
-                var stream = File.OpenWrite(_filename);
-                var writer = new StreamWriter(stream);
+            { 
+                stream = File.OpenWrite(_filename);
+                writer = new StreamWriter(stream);
 
                 foreach (var item in _items)
                 {
@@ -98,8 +103,6 @@ namespace Nile.Data.IO
                     writer.WriteLine(line);
                 }
 
-                writer.Close();
-                stream.Close();
             } catch (ArgumentException e)
             { 
                 //Never right!
@@ -108,20 +111,40 @@ namespace Nile.Data.IO
             } catch (Exception e)
             {
                 throw new Exception("Save failed", e);
+            } finally
+            {
+                writer?.Close();
+                stream?.Close();
             }
+        }
+
+        private void SaveData()
+        {
+            using (var stream = File.OpenWrite(_filename))
+            using (var writer = new StreamWriter(stream))
+            {
+                foreach (var item in _items)
+                {
+                    var line = $"{item.Id},{item.Name},{item.Description},{item.Price},{(item.IsDiscontinued ? 1 : 0)}";
+
+                    writer.WriteLine(line);
+                };
+            };
         }
 
         private void SaveDataNonstream()
         {
-            var lines = new List<string>();
+            var lines = _items.Select(item => $"{item.Id},{item.Name},{item.Description},{item.Price},{(item.IsDiscontinued ? 1 : 0)}");
 
-            foreach (var item in _items)
-            {
-                var line = $"{item.Id},{item.Name},{item.Description},{item.Price},{(item.IsDiscontinued ? 1 : 0)}";
-                lines.Add(line);
-            }
+            //var lines = new List<string>();
 
-            //File.WriteAllLines(_filename, lines);
+            //foreach (var item in _items)
+            //{
+            //    var line = $"{item.Id},{item.Name},{item.Description},{item.Price},{(item.IsDiscontinued ? 1 : 0)}";
+            //    lines.Add(line);
+            //}
+
+            File.WriteAllLines(_filename, lines);
         }
 
         private int ParseInt32 (string value )
@@ -142,26 +165,30 @@ namespace Nile.Data.IO
         {
             EnsureInitialized();
 
-            foreach (var item in _items)
-            {
-                if (item.Id == id)
-                    return item;
-            }
+            return _items.FirstOrDefault(i => i.Id == id);
 
-            return null;
+            //foreach (var item in _items)
+            //{
+            //    if (item.Id == id)
+            //        return item;
+            //}
+
+            //return null;
         }
 
         protected override Product GetProductByNameCore( string name )
         {
             EnsureInitialized();
 
-            foreach (var item in _items)
-            {
-                if (item.Name == name)
-                    return item;
-            }
+            return _items.FirstOrDefault(i => String.Compare(i.Name, name, true) == 0);
 
-            return null;
+            //foreach (var item in _items)
+            //{
+            //    if (item.Name == name)
+            //        return item;
+            //}
+
+            //return null;
         }
 
         protected override void RemoveCore( int id )

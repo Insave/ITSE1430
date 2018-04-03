@@ -13,8 +13,6 @@ namespace Nile.Data
         public Product Add ( Product product ) 
         {
             //Check for null
-            //if (product == null)
-                //throw new ArgumentNullException(nameof(product));
             product = product ?? throw new ArgumentNullException(nameof(product));
 
             //Validate product
