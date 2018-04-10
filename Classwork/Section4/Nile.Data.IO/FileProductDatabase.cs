@@ -56,7 +56,7 @@ namespace Nile.Data.IO
         private List<Product> LoadData()
         {
             var items = new List<Product>();
-
+            
             try
             {
                 //Make sure the file exists
@@ -143,7 +143,7 @@ namespace Nile.Data.IO
             //    var line = $"{item.Id},{item.Name},{item.Description},{item.Price},{(item.IsDiscontinued ? 1 : 0)}";
             //    lines.Add(line);
             //}
-
+            
             File.WriteAllLines(_filename, lines);
         }
 

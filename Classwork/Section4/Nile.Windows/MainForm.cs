@@ -4,11 +4,13 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using Nile.Data;
 using Nile.Data.IO;
 using Nile.Data.Memory;
+using Nile.Data.Sql;
 
 namespace Nile.Windows
 {
@@ -23,7 +25,9 @@ namespace Nile.Windows
         {
             base.OnLoad(e);
 
-            _database = new FileProductDatabase("products.csv");
+            //_database = new FileProductDatabase("products.csv");
+            var connString = ConfigurationManager.ConnectionStrings["NileDatabase"];
+            _database = new SqlProductDatabase(connString.ConnectionString);
 
             //_database.Seed();
             RefreshUI();
@@ -135,12 +139,35 @@ namespace Nile.Windows
 
         #region Private members
 
+        //private sealed class SelectedRowType
+        //{
+        //    public int Index { get; set; }
+        //    public Product Product { get; set; }
+        //}
+
         private Product GetSelectedProduct()
         {
-            if (dataGridView1.SelectedRows.Count > 0)
-                return dataGridView1.SelectedRows[0].DataBoundItem as Product;
+            //Correct, demoing something new
+            //return (from r in dataGridView1.SelectedRows.OfType<DataGridViewRow>()
+            //        select r.DataBoundItem as Product).FirstOrDefault();
 
-            return null;
+            var items = (from r in dataGridView1.SelectedRows.OfType<DataGridViewRow>()
+                         select new {
+                             Index = r.Index, Product = r.DataBoundItem as Product
+                         }).FirstOrDefault();
+
+            return items.Product;
+
+            //var items = (from r in dataGridView1.SelectedRows.OfType<DataGridViewRow>()
+            //        select new SelectedRowType() {
+            //            Index = r.Index, Product = r.DataBoundItem as Product }).FirstOrDefault();
+
+            //return items.Product;
+
+            //if (dataGridView1.SelectedRows.Count > 0)
+            //    return dataGridView1.SelectedRows[0].DataBoundItem as Product;
+
+            //return null;
         }
 
         private void RefreshUI ()
