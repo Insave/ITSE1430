@@ -1,13 +1,16 @@
 ﻿/*
  * ITSE 1430
- * Patrick Fief
- * Lab 3
+ * Lab 4
  */
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using PatrickFief.MovieLib.Data;
 using PatrickFief.MovieLib.Data.Memory;
+using PatrickFief.MovieLib.Data.Sql;
 
 namespace PatrickFief.MovieLib.Windows
 {
@@ -22,26 +25,28 @@ namespace PatrickFief.MovieLib.Windows
         {
             base.OnLoad(e);
 
-            _database.Seed();
+            var connString = ConfigurationManager.ConnectionStrings["MovieDatabase"];
+            _database = new SqlMovieDatabase(connString.ConnectionString);
 
             RefreshUI();
         }
 
         #region Event Handlers
 
+        //Called when a cell is double clicked
         private void OnCellDoubleClick( object sender, DataGridViewCellEventArgs e )
         {
-            var movie = GetSelectedProduct();
+            var movie = GetSelectedMovie();
             if (movie == null)
                 return;
-
+            
             EditMovie(movie);
         }
 
         //Called when a key is pressed while in a cell
         private void OnCellKeyDown( object sender, KeyEventArgs e )
         {
-            var movie = GetSelectedProduct();
+            var movie = GetSelectedMovie();
             if (movie == null)
                 return;
 
@@ -61,37 +66,43 @@ namespace PatrickFief.MovieLib.Windows
             Close();
         }
 
-        private void OnMovieAdd( object sender, EventArgs e )
+        private void OnMovieAdd ( object sender, EventArgs e )
         {
             var button = sender as ToolStripMenuItem;
-
             var form = new MovieDetailForm("Add Movie");
-            string message;
+            var valid = false;
 
             do
             {
+                //Show form modally
                 var result = form.ShowDialog(this);
                 if (result != DialogResult.OK)
                     return;
 
-                //Add the product to the database
-                _database.Add(form.Movie, out message);
-
-                if (!String.IsNullOrEmpty(message))
+                //Add to database
+                //_database.Add(form.Movie);
+                try
                 {
-                    MessageBox.Show(message);
+                    _database.Add(form.Movie);
+                    valid = true;
+                } catch (NotImplementedException)
+                {
+                    MessageBox.Show("not implemented yet");
+                } catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                     form = new MovieDetailForm(form.Movie);
                     form.Text = "Add Movie";
-                }
-            } while (!String.IsNullOrEmpty(message));
+                };
+            } while (!valid);
 
             RefreshUI();
         }
 
         private void OnMovieEdit( object sender, EventArgs e )
         {
-            //Get selected product
-            var movie = GetSelectedProduct();
+            //Get selected movie
+            var movie = GetSelectedMovie();
             if (movie == null)
             {
                 MessageBox.Show(this, "No movie selected", "Error",
@@ -99,13 +110,13 @@ namespace PatrickFief.MovieLib.Windows
                 return;
             };
 
-            EditMovie(movie);
+            EditMovie(movie);            
         }
 
-        private void OnMovieDelete( object sender, EventArgs e )
+        private void OnMovieRemove( object sender, EventArgs e )
         {
-            //Get selected product
-            var movie = GetSelectedProduct();
+            //Get selected movie
+            var movie = GetSelectedMovie();
             if (movie == null)
             {
                 MessageBox.Show(this, "No movie selected", "Error",
@@ -122,7 +133,6 @@ namespace PatrickFief.MovieLib.Windows
 
             form.ShowDialog(this);
         }
-
         #endregion
 
         #region Private Members
@@ -133,8 +143,14 @@ namespace PatrickFief.MovieLib.Windows
             if (!ShowConfirmation("Are you sure?", "Remove Movie"))
                 return;
 
-            //Remove product
-            _database.Remove(movie.Id);
+            //Remove movie
+            try
+            {
+                _database.Remove(movie.Id);
+            } catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            };
 
             RefreshUI();
         }
@@ -142,58 +158,68 @@ namespace PatrickFief.MovieLib.Windows
         //Helper method to handle editing movies
         private void EditMovie( Movie movie )
         {
-            string message;
             var form = new MovieDetailForm(movie);
+
+            //Update the movie
+            form.Movie.Id = movie.Id;
+            var valid = false;
 
             do
             {
+                //Show form modally
                 var result = form.ShowDialog(this);
                 if (result != DialogResult.OK)
                     return;
-
-                //Update the product
-                form.Movie.Id = movie.Id;
-                _database.Update(form.Movie, out message);
-
-                if (!String.IsNullOrEmpty(message))
+                
+                try
                 {
-                    MessageBox.Show(message);
+                    _database.Update(form.Movie);
+                    valid = true;
+                } catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
                     form = new MovieDetailForm(form.Movie);
-                }
-            } while (!String.IsNullOrEmpty(message));
+                };
+            } while (!valid);
 
             RefreshUI();
         }
 
-        private Movie GetSelectedProduct()
+        private Movie GetSelectedMovie ( )
         {
-            //TODO: Use the binding source
-            //Get the first selected row in the grid, if any
-            if (dataGridView1.SelectedRows.Count > 0)
-                return dataGridView1.SelectedRows[0].DataBoundItem as Movie;
+            var items = (from r in dataGridView1.SelectedRows.OfType<DataGridViewRow>()
+                         select new {
+                             Index = r.Index,
+                             Movie = r.DataBoundItem as Movie
+                         }).FirstOrDefault();
 
-            return null;
+            return items.Movie;
         }
 
-        private void RefreshUI()
+        private void RefreshUI ()
         {
-            //Get products
-            var movies = _database.GetAll();
+            //Get movies
+            IEnumerable<Movie> movies = null;
+            try
+            {
+                movies = _database.GetAll();
+            } catch (Exception)
+            {
+                MessageBox.Show("Error loading movies");
+            };
 
-            //Bind to grid
-            bindingSource1.DataSource = movies.ToList();
+            movieBindingSource.DataSource = movies?.ToList();
         }
 
-        private bool ShowConfirmation( string message, string title )
+        private bool ShowConfirmation ( string message, string title )
         {
-            return MessageBox.Show(this, message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)
-                == DialogResult.Yes;
+            return MessageBox.Show(this, message, title
+                             , MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                           == DialogResult.Yes;
         }
-        
-        private IMovieDatabase _database = new MemoryProductDatabase();
+
+        private IMovieDatabase _database;
 
         #endregion
-
-        
     }
 }
