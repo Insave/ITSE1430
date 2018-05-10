@@ -30,7 +30,7 @@ namespace MovieLib.Web.Models
             {
                 Id = source.Id,
                 Title = source.Title,
-                Rating = source.Rating,
+                Rating = source.Rating, //CR2 Patrick Fief - Rating was not persistent
                 Description = source.Description,
                 Length = source.Length,
                 IsOwned = source.IsOwned,
@@ -47,7 +47,7 @@ namespace MovieLib.Web.Models
             {
                 Id = source.Id,
                 Title = source.Title,
-                Rating = source.Rating,
+                Rating = source.Rating, //CR2 Patrick Fief - Rating was not persistent
                 Description = source.Description,
                 Length = source.Length,
                 IsOwned = source.IsOwned,

@@ -27,7 +27,7 @@ namespace MovieLib.Data.Sql
         /// <summary>Adds a movie.</summary>
         /// <param name="movie">The movie to add.</param>
         /// <returns>The added movie.</returns>
-        protected override Movie AddCore ( Movie movie )
+        protected override Movie AddCore ( Movie movie ) //CR1 Patrick Fief - missing override specifier
         {
             using (var conn = new SqlConnection(_connectionString))
             {

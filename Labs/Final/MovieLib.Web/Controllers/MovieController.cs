@@ -99,6 +99,7 @@ namespace MovieLib.Web.Controllers
         public ActionResult List()
         {
             var movies = from m in _database.GetAll()
+                         orderby m.Title //CR5 Patrick Fief - implement sorting movie by name
                          select m;
             
             return View(movies.ToViewModel());

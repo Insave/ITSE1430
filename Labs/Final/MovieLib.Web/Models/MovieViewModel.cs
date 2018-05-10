@@ -28,6 +28,7 @@ namespace MovieLib.Web.Models
         public Rating Rating { get; set; }
 
         [Display(Name = "Release Year")]
+        [Range(1900, 2100, ErrorMessage = "Year must be between 1900 and 2100.")] //CR3 Patrick Fief - Year was not limited
         public int ReleaseYear { get; set; }
 
         public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext ) => Enumerable.Empty<ValidationResult>();        

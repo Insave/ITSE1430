@@ -46,7 +46,7 @@ namespace MovieLib.Data
 
         /// <summary>Gets all the movies.</summary>
         /// <returns>The list of movies.</returns>
-        public IEnumerable<Movie> GetAll ()
+        public IEnumerable<Movie> GetAll () //CR1 Patrick Fief - fixed casing preventing compile
         {
             return GetAllCore();
         }
@@ -64,7 +64,7 @@ namespace MovieLib.Data
                 throw new ArgumentOutOfRangeException(nameof(id), "ID must be > 0.");
 
             var existing = GetCore(id);
-            if (existing == null)
+            if (existing == null) //CR4 Patrick Fief - fixed bad conditional preventing movie delete
                 return false;
 
             RemoveCore(id);
