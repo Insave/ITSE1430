@@ -30,7 +30,7 @@ namespace MovieLib.Web.Models
             {
                 Id = source.Id,
                 Title = source.Title,
-
+                Rating = source.Rating,
                 Description = source.Description,
                 Length = source.Length,
                 IsOwned = source.IsOwned,
@@ -47,7 +47,7 @@ namespace MovieLib.Web.Models
             {
                 Id = source.Id,
                 Title = source.Title,
-
+                Rating = source.Rating,
                 Description = source.Description,
                 Length = source.Length,
                 IsOwned = source.IsOwned,
